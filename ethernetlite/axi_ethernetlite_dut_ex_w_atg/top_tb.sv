@@ -5,7 +5,7 @@ module top_tb ();
 parameter	CLK_CYCLE = 10;
 
 reg	sys_clk;
-reg	rst_n;
+reg	arstn;
 reg	phy_clk;
 wire	done;
 wire	[1:0]	status;
@@ -25,11 +25,11 @@ initial begin
 	forever #(CLK_CYCLE * 4/2)	phy_clk = ~phy_clk;
 end
 
-// rst_n: active low
+// arstn: active low
 initial begin 
-	rst_n = 1'b0;
-	#(CLK_CYCLE * 5/2)	rst_n <= 1'b0;
-	#(CLK_CYCLE * 7)	rst_n <= 1'b1;
+	arstn = 1'b0;
+	#(CLK_CYCLE * 5/2)	arstn <= 1'b0;
+	#(CLK_CYCLE * 7)	arstn <= 1'b1;
 end
 
 always@(done) begin 
@@ -73,7 +73,7 @@ wire	[1:0]	rresp;
 
 axi_traffic_gen_0 ATG (
 	.s_axi_aclk(sys_clk),                          // input wire s_axi_aclk
-	.s_axi_aresetn(rst_n),                    // input wire s_axi_aresetn
+	.s_axi_aresetn(arstn),                    // input wire s_axi_aresetn
 
 	.m_axi_lite_ch1_awaddr(awaddr),    // output wire [31 : 0] m_axi_lite_ch1_awaddr
 	.m_axi_lite_ch1_awprot(),		   // output wire [2 : 0] m_axi_lite_ch1_awprot
@@ -104,7 +104,7 @@ axi_traffic_gen_0 ATG (
 
 axi_ethernetlite_dut DUT (
 	.s_axi_aclk(sys_clk),        // input wire s_axi_aclk
-	.s_axi_aresetn(rst_n),  // input wire s_axi_aresetn
+	.s_axi_aresetn(arstn),  // input wire s_axi_aresetn
 	.ip2intc_irpt(),    // output wire ip2intc_irpt
 
 	.s_axi_awaddr(awaddr[12:0]),    // input wire [12 : 0] s_axi_awaddr

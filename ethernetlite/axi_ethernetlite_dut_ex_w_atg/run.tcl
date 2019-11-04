@@ -2,7 +2,7 @@ project open D:/proj/axi_ethernetlite_dut_ex/axi_ethernetlite_dut_ex_w_atg.mpf
 project compileall
 vsim work.top_tb -novopt
 add wave -position end  sim:/top_tb/sys_clk
-add wave -position end  sim:/top_tb/rst_n
+add wave -position end  sim:/top_tb/arstn
 add wave -position end  sim:/top_tb/phy_clk
 add wave -position end  sim:/top_tb/done
 add wave -position end  sim:/top_tb/status
