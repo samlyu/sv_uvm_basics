@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module top_tb ();
+module top_tb_w_atg ();
 
 parameter	CLK_CYCLE = 10;
 
@@ -32,6 +32,7 @@ initial begin
 	#(CLK_CYCLE * 7)	arstn <= 1'b1;
 end
 
+// display result
 always@(done) begin 
 	if(done) begin 
 		if(status == 2'b01) begin 
@@ -76,7 +77,7 @@ axi_traffic_gen_0 ATG (
 	.s_axi_aresetn(arstn),                    // input wire s_axi_aresetn
 
 	.m_axi_lite_ch1_awaddr(awaddr),    // output wire [31 : 0] m_axi_lite_ch1_awaddr
-	.m_axi_lite_ch1_awprot(),		   // output wire [2 : 0] m_axi_lite_ch1_awprot
+	.m_axi_lite_ch1_awprot(),   // output wire [2 : 0] m_axi_lite_ch1_awprot
 	.m_axi_lite_ch1_awvalid(awvalid),  // output wire m_axi_lite_ch1_awvalid
 	.m_axi_lite_ch1_awready(awready),  // input wire m_axi_lite_ch1_awready
 
