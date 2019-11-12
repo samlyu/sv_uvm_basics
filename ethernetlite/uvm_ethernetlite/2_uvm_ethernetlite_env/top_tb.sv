@@ -2,8 +2,8 @@
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
-`include "ether_if.sv"
-`include "ether_driver.sv"
+`include "ether_if_axi.sv"
+`include "ether_env.sv"
 
 module top_tb ();
 
@@ -11,7 +11,7 @@ parameter	CLK_CYCLE = 10;
 logic	sys_clk;
 logic	arstn;
 logic	phy_clk;
-ether_if	if_inst(sys_clk, arstn, phy_clk);
+ether_if_axi	if_axi_inst(sys_clk, arstn, phy_clk, ip2intc_irpt);
 
 // sys_clk: 100MHz
 initial begin
@@ -33,39 +33,40 @@ initial begin
 end
 
 initial begin 
-	run_test("ether_driver");
+	run_test("ether_env");
 end
 
 initial begin 
-	uvm_config_db#(virtual ether_if)::set(null, "uvm_test_top", "vif", if_inst);
+	uvm_config_db#(virtual ether_if_axi)::set(null, "uvm_test_top.drv", "vif", if_axi_inst);
+	uvm_config_db#(virtual ether_if_axi)::set(null, "uvm_test_top.mon_axi", "vif", if_axi_inst);
 end
 
 axi_ethernetlite_dut DUT (
 	.s_axi_aclk(sys_clk),        // input wire s_axi_aclk
 	.s_axi_aresetn(arstn),  // input wire s_axi_aresetn
-	.ip2intc_irpt(),    // output wire ip2intc_irpt
+	.ip2intc_irpt(ip2intc_irpt),    // output wire ip2intc_irpt
 
-	.s_axi_awaddr(if_inst.awaddr[12:0]),    // input wire [12 : 0] s_axi_awaddr
-	.s_axi_awvalid(if_inst.awvalid),  // input wire s_axi_awvalid
-	.s_axi_awready(if_inst.awready),  // output wire s_axi_awready
+	.s_axi_awaddr(if_axi_inst.awaddr[12:0]),    // input wire [12 : 0] s_axi_awaddr
+	.s_axi_awvalid(if_axi_inst.awvalid),  // input wire s_axi_awvalid
+	.s_axi_awready(if_axi_inst.awready),  // output wire s_axi_awready
 
-	.s_axi_wdata(if_inst.wdata),      // input wire [31 : 0] s_axi_wdata
-	.s_axi_wstrb(if_inst.wstrb),      // input wire [3 : 0] s_axi_wstrb
-	.s_axi_wvalid(if_inst.wvalid),    // input wire s_axi_wvalid
-	.s_axi_wready(if_inst.wready),    // output wire s_axi_wready
+	.s_axi_wdata(if_axi_inst.wdata),      // input wire [31 : 0] s_axi_wdata
+	.s_axi_wstrb(if_axi_inst.wstrb),      // input wire [3 : 0] s_axi_wstrb
+	.s_axi_wvalid(if_axi_inst.wvalid),    // input wire s_axi_wvalid
+	.s_axi_wready(if_axi_inst.wready),    // output wire s_axi_wready
 
-	.s_axi_bresp(if_inst.bresp),      // output wire [1 : 0] s_axi_bresp
-	.s_axi_bvalid(if_inst.bvalid),    // output wire s_axi_bvalid
-	.s_axi_bready(if_inst.bready),    // input wire s_axi_bready
+	.s_axi_bresp(if_axi_inst.bresp),      // output wire [1 : 0] s_axi_bresp
+	.s_axi_bvalid(if_axi_inst.bvalid),    // output wire s_axi_bvalid
+	.s_axi_bready(if_axi_inst.bready),    // input wire s_axi_bready
 
-	.s_axi_araddr(if_inst.araddr[12:0]),    // input wire [12 : 0] s_axi_araddr
-	.s_axi_arvalid(if_inst.arvalid),  // input wire s_axi_arvalid
-	.s_axi_arready(if_inst.arready),  // output wire s_axi_arready
+	.s_axi_araddr(if_axi_inst.araddr[12:0]),    // input wire [12 : 0] s_axi_araddr
+	.s_axi_arvalid(if_axi_inst.arvalid),  // input wire s_axi_arvalid
+	.s_axi_arready(if_axi_inst.arready),  // output wire s_axi_arready
 
-	.s_axi_rdata(if_inst.rdata),      // output wire [31 : 0] s_axi_rdata
-	.s_axi_rresp(if_inst.rresp),      // output wire [1 : 0] s_axi_rresp
-	.s_axi_rvalid(if_inst.rvalid),    // output wire s_axi_rvalid
-	.s_axi_rready(if_inst.rready),    // input wire s_axi_rready
+	.s_axi_rdata(if_axi_inst.rdata),      // output wire [31 : 0] s_axi_rdata
+	.s_axi_rresp(if_axi_inst.rresp),      // output wire [1 : 0] s_axi_rresp
+	.s_axi_rvalid(if_axi_inst.rvalid),    // output wire s_axi_rvalid
+	.s_axi_rready(if_axi_inst.rready),    // input wire s_axi_rready
 
 	.phy_tx_clk(phy_clk),        // input wire phy_tx_clk
 	.phy_rx_clk(phy_clk),        // input wire phy_rx_clk

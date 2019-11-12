@@ -1,13 +1,13 @@
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
-`include "ether_if.sv"
+`include "ether_if_axi.sv"
 `include "ether_transaction.sv"
 
 class ether_driver extends uvm_driver;
 
 	`uvm_component_utils(ether_driver)
-	virtual ether_if vif;
+	virtual ether_if_axi vif;
 
 	function new(string name = "ether_driver", uvm_component parent = null);
 		super.new(name, parent);
@@ -58,8 +58,8 @@ class ether_driver extends uvm_driver;
 	begin 
 		repeat (3) @(posedge vif.sys_clk);
 			vif.rready = 1'b1;
-		@(posedge vif.rvalid)
-			$display("data received = %b", vif.rdata);
+		// @(posedge vif.rvalid);
+		// 	$display("data received = %b", vif.rdata);
 		@(negedge vif.rvalid)
 			vif.rready = 1'b0;
 	end
@@ -101,7 +101,7 @@ class ether_driver extends uvm_driver;
 	virtual function void build_phase(uvm_phase phase);
 		super.build_phase(phase);
 		`uvm_info("ether_driver", "driver build_phase called", UVM_LOW)
-		if(!uvm_config_db#(virtual ether_if)::get(this, "", "vif", vif))
+		if(!uvm_config_db#(virtual ether_if_axi)::get(this, "", "vif", vif))
 			`uvm_fatal("ether_driver", "virtual interface must be set in driver!")
 	endfunction : build_phase
 
@@ -153,10 +153,10 @@ class ether_driver extends uvm_driver;
 		// $display("pload:\t %h",tr.pload);
 		// $display("pload_r:\t %h",tr.pload_r);
 		// $display("size: ", data_q.size());
-		$display("data_q:");
-		foreach(data_q[i]) begin
-			$display("%h", data_q[i]);
-		end
+		// $display("data_q:");
+		// foreach(data_q[i]) begin
+		// 	$display("%h", data_q[i]);
+		// end
 
 		axi_init();
 		@(posedge vif.arstn)

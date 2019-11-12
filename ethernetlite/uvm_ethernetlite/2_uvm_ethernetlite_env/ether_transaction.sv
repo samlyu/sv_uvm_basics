@@ -1,3 +1,6 @@
+`ifndef ETHER_TRANSACTION__SV
+`define ETHER_TRANSACTION__SV
+
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
@@ -12,6 +15,10 @@ class ether_transaction extends uvm_sequence_item;
 
 	bit [47:0] dmac_r, smac_r;
 	rand byte	pload_r[];
+
+	function new(string name = "ether_transaction");
+		super.new(name);
+	endfunction : new
 
 	constraint pload_cons {
 		pload.size() >= 46;
@@ -40,8 +47,16 @@ class ether_transaction extends uvm_sequence_item;
 		pload_rev();
 	endfunction : post_randomize
 
-	function new(string name = "ether_transaction");
-		super.new(name);
-	endfunction : new
+	function void my_print();
+		$display("dmac = %0h", dmac);
+		$display("smac = %0h", smac);
+		$display("ether_type = %0h", ether_type);
+		$display("pload.size = %0h", pload.size());
+		for (int i = 0; i < pload.size(); i++) begin
+			$display("pload[%0d] = %0h", i, pload[i]);
+		end
+	endfunction : my_print
 
 endclass : ether_transaction
+
+`endif

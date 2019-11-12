@@ -1,4 +1,4 @@
-interface ether_if (input sys_clk, input arstn, input phy_clk);
+interface ether_if_axi (input sys_clk, input arstn, input phy_clk, output ip2intc_irpt);
 
 	logic	[31:0]	awaddr;
 	logic	awvalid;
