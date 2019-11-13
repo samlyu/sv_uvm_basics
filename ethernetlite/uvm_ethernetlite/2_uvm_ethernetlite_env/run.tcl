@@ -1,10 +1,11 @@
+quit -sim
 project open D:/proj/uvm_ethernetlite/2_uvm_ethernetlite_env/uvm_ethernetlite_env.mpf
 project compileall
 vsim work.top_tb -novopt
-add wave -position end  sim:/top_tb/if_axi_inst/sys_clk
-add wave -position end  sim:/top_tb/if_axi_inst/arstn
-add wave -position end  sim:/top_tb/if_axi_inst/phy_clk
-add wave -position end  sim:/top_tb/if_axi_inst/ip2intc_irpt
+add wave -position end  sim:/top_tb/sys_clk
+add wave -position end  sim:/top_tb/arstn
+add wave -position end  sim:/top_tb/phy_clk
+add wave -position end  sim:/top_tb/ip2intc_irpt
 add wave -position end  sim:/top_tb/if_axi_inst/awaddr
 add wave -position end  sim:/top_tb/if_axi_inst/awvalid
 add wave -position end  sim:/top_tb/if_axi_inst/awready
@@ -22,14 +23,12 @@ add wave -position end  sim:/top_tb/if_axi_inst/rdata
 add wave -position end  sim:/top_tb/if_axi_inst/rvalid
 add wave -position end  sim:/top_tb/if_axi_inst/rready
 add wave -position end  sim:/top_tb/if_axi_inst/rresp
-add wave -position end  sim:/top_tb/DUT/phy_tx_clk
-add wave -position end  sim:/top_tb/DUT/phy_rx_clk
-add wave -position end  sim:/top_tb/DUT/phy_crs
-add wave -position end  sim:/top_tb/DUT/phy_dv
-add wave -position end  sim:/top_tb/DUT/phy_rx_data
-add wave -position end  sim:/top_tb/DUT/phy_col
-add wave -position end  sim:/top_tb/DUT/phy_rx_er
-add wave -position end  sim:/top_tb/DUT/phy_rst_n
-add wave -position end  sim:/top_tb/DUT/phy_tx_en
-add wave -position end  sim:/top_tb/DUT/phy_tx_data
+add wave -position end  sim:/top_tb/if_phy_inst/crs
+add wave -position end  sim:/top_tb/if_phy_inst/dv
+add wave -position end  sim:/top_tb/if_phy_inst/rx_data
+add wave -position end  sim:/top_tb/if_phy_inst/col
+add wave -position end  sim:/top_tb/if_phy_inst/rx_er
+add wave -position end  sim:/top_tb/if_phy_inst/rst_n
+add wave -position end  sim:/top_tb/if_phy_inst/tx_en
+add wave -position end  sim:/top_tb/if_phy_inst/tx_data
 run -a

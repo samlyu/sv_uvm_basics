@@ -1,13 +1,14 @@
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
-`include "ether_if_axi.sv"
+`include "ether_if.sv"
 `include "ether_transaction.sv"
 
 class ether_driver extends uvm_driver;
 
 	`uvm_component_utils(ether_driver)
-	virtual ether_if_axi vif;
+	virtual ether_if_axi vif_axi;
+	virtual ether_if_phy vif_phy;
 
 	function new(string name = "ether_driver", uvm_component parent = null);
 		super.new(name, parent);
@@ -16,72 +17,82 @@ class ether_driver extends uvm_driver;
 	// AXI4 Lite
 	task axi_aw(input [31:0] awaddr_in);
 	begin 
-		repeat (3) @(posedge vif.sys_clk);
-			vif.awaddr = awaddr_in;
-			vif.awvalid = 1'b1;
-		@(negedge vif.awready)
-			vif.awvalid = 1'b0;
+		repeat (3) @(posedge vif_axi.sys_clk);
+			vif_axi.awaddr = awaddr_in;
+			vif_axi.awvalid = 1'b1;
+		@(negedge vif_axi.awready)
+			vif_axi.awvalid = 1'b0;
 	end
 	endtask : axi_aw
 
 	task axi_w(input [31:0] wdata_in);
 	begin 
-		repeat (3) @(posedge vif.sys_clk);
-			vif.wdata = wdata_in;
-			vif.wstrb = 4'hf;
-			vif.wvalid = 1'b1;
-		@(negedge vif.wready)
-			vif.wvalid = 1'b0;
+		repeat (3) @(posedge vif_axi.sys_clk);
+			vif_axi.wdata = wdata_in;
+			vif_axi.wstrb = 4'hf;
+			vif_axi.wvalid = 1'b1;
+		@(negedge vif_axi.wready)
+			vif_axi.wvalid = 1'b0;
 	end
 	endtask : axi_w
 
 	task axi_b();
 	begin 
-		repeat (3) @(posedge vif.sys_clk);
-			vif.bready = 1'b1;
-		@(negedge vif.bvalid)
-			vif.bready = 1'b0;
+		repeat (3) @(posedge vif_axi.sys_clk);
+			vif_axi.bready = 1'b1;
+		@(negedge vif_axi.bvalid)
+			vif_axi.bready = 1'b0;
 	end
 	endtask : axi_b
 
 	task axi_ar(input [31:0] araddr_in);
 	begin 
-		repeat (3) @(posedge vif.sys_clk);
-			vif.araddr = araddr_in;
-			vif.arvalid = 1'b1;
-		@(negedge vif.arready)
-			vif.arvalid = 1'b0;
+		repeat (3) @(posedge vif_axi.sys_clk);
+			vif_axi.araddr = araddr_in;
+			vif_axi.arvalid = 1'b1;
+		@(negedge vif_axi.arready)
+			vif_axi.arvalid = 1'b0;
 	end
 	endtask : axi_ar
 
 	task axi_r();
 	begin 
-		repeat (3) @(posedge vif.sys_clk);
-			vif.rready = 1'b1;
-		// @(posedge vif.rvalid);
-		// 	$display("data received = %b", vif.rdata);
-		@(negedge vif.rvalid)
-			vif.rready = 1'b0;
+		repeat (3) @(posedge vif_axi.sys_clk);
+			vif_axi.rready = 1'b1;
+		// @(posedge vif_axi.rvalid);
+		// 	$display("data received = %b", vif_axi.rdata);
+		@(negedge vif_axi.rvalid)
+			vif_axi.rready = 1'b0;
 	end
 	endtask : axi_r
 
 	task axi_init();
 	begin 
-		vif.awaddr = 32'h0;
-		vif.awvalid = 1'b0;
+		vif_axi.awaddr = 32'h0;
+		vif_axi.awvalid = 1'b0;
 
-		vif.wdata = 32'h0;
-		vif.wstrb = 4'hf;
-		vif.wvalid = 1'b0;
+		vif_axi.wdata = 32'h0;
+		vif_axi.wstrb = 4'hf;
+		vif_axi.wvalid = 1'b0;
 
-		vif.bready = 1'b0;
+		vif_axi.bready = 1'b0;
 
-		vif.araddr = 32'h0;
-		vif.arvalid = 1'b0;
+		vif_axi.araddr = 32'h0;
+		vif_axi.arvalid = 1'b0;
 
-		vif.rready = 1'b0;
+		vif_axi.rready = 1'b0;
 	end
 	endtask : axi_init
+
+	task phy_init();
+	begin 
+		vif_phy.crs = 1'b0;
+		vif_phy.dv = 1'b0;
+		vif_phy.rx_data = 4'd0;
+		vif_phy.col = 1'b0;
+		vif_phy.rx_er = 1'b0;
+	end
+	endtask : phy_init
 
 	task write_transaction(input [31:0] awaddr_in, wdata_in);
 	fork
@@ -101,8 +112,10 @@ class ether_driver extends uvm_driver;
 	virtual function void build_phase(uvm_phase phase);
 		super.build_phase(phase);
 		`uvm_info("ether_driver", "driver build_phase called", UVM_LOW)
-		if(!uvm_config_db#(virtual ether_if_axi)::get(this, "", "vif", vif))
-			`uvm_fatal("ether_driver", "virtual interface must be set in driver!")
+		if(!uvm_config_db#(virtual ether_if_axi)::get(this, "", "vif_axi", vif_axi))
+			`uvm_fatal("ether_driver", "axi virtual interface must be set in driver!")
+		if(!uvm_config_db#(virtual ether_if_phy)::get(this, "", "vif_phy", vif_phy))
+			`uvm_fatal("ether_driver", "phy virtual interface must be set in driver!")
 	endfunction : build_phase
 
 	virtual task main_phase(uvm_phase phase);
@@ -120,7 +133,7 @@ class ether_driver extends uvm_driver;
 		);
 		drive_one_pkt(tr);
 
-		repeat (15) @(posedge vif.sys_clk);
+		repeat (15) @(posedge vif_axi.sys_clk);
 		phase.drop_objection(this);
 	end
 	endtask : main_phase
@@ -150,7 +163,9 @@ class ether_driver extends uvm_driver;
 		// $display("smac_r: %h", tr.smac_r);
 		// $display("type:\t %h", tr.ether_type);
 		// $display("pload size:\t %h", tr.pload.size());
-		// $display("pload:\t %h",tr.pload);
+		// foreach(tr.pload[i]) begin
+		// 	$display("%h", tr.pload[i]);
+		// end
 		// $display("pload_r:\t %h",tr.pload_r);
 		// $display("size: ", data_q.size());
 		// $display("data_q:");
@@ -158,8 +173,9 @@ class ether_driver extends uvm_driver;
 		// 	$display("%h", data_q[i]);
 		// end
 
+		phy_init();
 		axi_init();
-		@(posedge vif.arstn)
+		@(posedge vif_axi.arstn)
 		write_transaction(32'h000107F8, 32'h80000000);
 		write_transaction(32'h000107F4, tr.ether_type+14);
 		for (int i = 0; i < data_q.size(); i++) begin
@@ -174,11 +190,11 @@ class ether_driver extends uvm_driver;
 		write_transaction(32'h000107FC, 32'h00000019);
 		`uvm_info("ether_driver", "write transactions done", UVM_LOW)
 
-		while(vif.rdata[3] != 1'b1 || vif.rdata[0] != 1'b0)
+		while(vif_axi.rdata[3] != 1'b1 || vif_axi.rdata[0] != 1'b0)
 		begin 
 			read_transaction(32'h000107FC);
 		end
-		while(vif.rdata[0] != 1'b1)
+		while(vif_axi.rdata[0] != 1'b1)
 		begin 
 			read_transaction(32'h000117FC);
 		end

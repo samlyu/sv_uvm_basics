@@ -2,7 +2,7 @@
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
-`include "ether_if_axi.sv"
+`include "ether_if.sv"
 `include "ether_env.sv"
 
 module top_tb ();
@@ -12,6 +12,7 @@ logic	sys_clk;
 logic	arstn;
 logic	phy_clk;
 ether_if_axi	if_axi_inst(sys_clk, arstn, phy_clk, ip2intc_irpt);
+ether_if_phy	if_phy_inst(sys_clk, arstn, phy_clk, ip2intc_irpt);
 
 // sys_clk: 100MHz
 initial begin
@@ -37,7 +38,8 @@ initial begin
 end
 
 initial begin 
-	uvm_config_db#(virtual ether_if_axi)::set(null, "uvm_test_top.drv", "vif", if_axi_inst);
+	uvm_config_db#(virtual ether_if_axi)::set(null, "uvm_test_top.drv", "vif_axi", if_axi_inst);
+	uvm_config_db#(virtual ether_if_phy)::set(null, "uvm_test_top.drv", "vif_phy", if_phy_inst);
 	uvm_config_db#(virtual ether_if_axi)::set(null, "uvm_test_top.mon_axi", "vif", if_axi_inst);
 end
 
@@ -70,14 +72,14 @@ axi_ethernetlite_dut DUT (
 
 	.phy_tx_clk(phy_clk),        // input wire phy_tx_clk
 	.phy_rx_clk(phy_clk),        // input wire phy_rx_clk
-	.phy_crs(1'b0),              // input wire phy_crs
-	.phy_dv(1'b0),                // input wire phy_dv
-	.phy_rx_data(4'd0),      // input wire [3 : 0] phy_rx_data
-	.phy_col(1'b0),              // input wire phy_col
-	.phy_rx_er(1'b0),          // input wire phy_rx_er
-	.phy_rst_n(),          // output wire phy_rst_n
-	.phy_tx_en(),          // output wire phy_tx_en
-	.phy_tx_data()      // output wire [3 : 0] phy_tx_data
+	.phy_crs(if_phy_inst.crs),              // input wire phy_crs
+	.phy_dv(if_phy_inst.dv),                // input wire phy_dv
+	.phy_rx_data(if_phy_inst.rx_data),      // input wire [3 : 0] phy_rx_data
+	.phy_col(if_phy_inst.col),              // input wire phy_col
+	.phy_rx_er(if_phy_inst.rx_er),          // input wire phy_rx_er
+	.phy_rst_n(if_phy_inst.rst_n),          // output wire phy_rst_n
+	.phy_tx_en(if_phy_inst.tx_en),          // output wire phy_tx_en
+	.phy_tx_data(if_phy_inst.tx_data)       // output wire [3 : 0] phy_tx_data
 );
 
 endmodule

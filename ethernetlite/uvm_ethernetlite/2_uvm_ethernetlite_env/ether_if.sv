@@ -23,3 +23,16 @@ interface ether_if_axi (input sys_clk, input arstn, input phy_clk, output ip2int
 	logic	[1:0]	rresp;
 
 endinterface
+
+interface ether_if_phy (input sys_clk, input arstn, input phy_clk, output ip2intc_irpt);
+
+	logic	crs;
+	logic	dv;
+	logic	[3:0]	rx_data;
+	logic	col;
+	logic	rx_er;
+	logic	rst_n;
+	logic	tx_en;
+	logic	[3:0]	tx_data;
+
+endinterface
