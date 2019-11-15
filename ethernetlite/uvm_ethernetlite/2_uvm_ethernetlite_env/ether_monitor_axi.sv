@@ -103,7 +103,7 @@ class ether_monitor_axi extends uvm_monitor;
 			assert(tr.pload.pop_back());
 		end
 
-		`uvm_info("ether_monitor_axi", "end collecting one packet, print result:", UVM_LOW)
+		`uvm_info("ether_monitor_axi", "end collecting one packet, print result: ", UVM_LOW)
 		tr.my_print();
 	endtask : collect_one_pkt
 

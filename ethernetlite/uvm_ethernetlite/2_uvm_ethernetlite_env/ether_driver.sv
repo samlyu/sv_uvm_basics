@@ -175,6 +175,7 @@ class ether_driver extends uvm_driver;
 
 		phy_init();
 		axi_init();
+		`uvm_info("ether_driver", "write transactions start", UVM_LOW)
 		@(posedge vif_axi.arstn)
 		write_transaction(32'h000107F8, 32'h80000000);
 		write_transaction(32'h000107F4, tr.ether_type+14);
@@ -190,6 +191,7 @@ class ether_driver extends uvm_driver;
 		write_transaction(32'h000107FC, 32'h00000019);
 		`uvm_info("ether_driver", "write transactions done", UVM_LOW)
 
+		`uvm_info("ether_driver", "read transactions start", UVM_LOW)
 		while(vif_axi.rdata[3] != 1'b1 || vif_axi.rdata[0] != 1'b0)
 		begin 
 			read_transaction(32'h000107FC);

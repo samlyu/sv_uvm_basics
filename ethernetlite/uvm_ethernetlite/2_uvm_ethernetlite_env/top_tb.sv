@@ -41,6 +41,7 @@ initial begin
 	uvm_config_db#(virtual ether_if_axi)::set(null, "uvm_test_top.drv", "vif_axi", if_axi_inst);
 	uvm_config_db#(virtual ether_if_phy)::set(null, "uvm_test_top.drv", "vif_phy", if_phy_inst);
 	uvm_config_db#(virtual ether_if_axi)::set(null, "uvm_test_top.mon_axi", "vif", if_axi_inst);
+	uvm_config_db#(virtual ether_if_phy)::set(null, "uvm_test_top.mon_phy", "vif", if_phy_inst);
 end
 
 axi_ethernetlite_dut DUT (
