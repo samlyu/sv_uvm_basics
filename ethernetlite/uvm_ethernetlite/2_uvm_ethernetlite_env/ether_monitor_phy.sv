@@ -7,7 +7,9 @@ import uvm_pkg::*;
 class ether_monitor_phy extends uvm_monitor;
 
 	`uvm_component_utils(ether_monitor_phy)
+
 	virtual ether_if_phy vif;
+	uvm_analysis_port #(ether_transaction) ap;
 
 	function new(string name = "ether_monitor_phy", uvm_component parent = null);
 		super.new(name, parent);
@@ -17,12 +19,15 @@ class ether_monitor_phy extends uvm_monitor;
 		super.build_phase(phase);
 		if(!uvm_config_db#(virtual ether_if_phy)::get(this, "", "vif", vif))
 			`uvm_fatal("ether_monitor_phy", "virtual interface must be set in monitor!")
+
+		ap = new("ap", this);
 	endfunction : build_phase
 
 	task main_phase(uvm_phase phase);
 		ether_transaction tr;
 		tr = new("tr");
 		collect_one_pkt(tr);
+		ap.write(tr);
 	endtask : main_phase
 
 	task phy_tx_collect(output [3:0] tx_data_out);
@@ -44,7 +49,7 @@ class ether_monitor_phy extends uvm_monitor;
 		end
 
 		for (int i = 0; i < 8; i++) begin
-			assert(data_q.pop_front());
+			data_temp = data_q.pop_front(); // useless data_temp
 		end
 
 		tr.dmac = {data_q[0], data_q[1], data_q[2], data_q[3], data_q[4], data_q[5]};
@@ -54,11 +59,11 @@ class ether_monitor_phy extends uvm_monitor;
 			tr.pload.push_back(data_q[i]);
 		end
 		while (tr.pload.size() > tr.ether_type) begin 
-			assert(tr.pload.pop_back());
+			data_temp = tr.pload.pop_back(); // useless data_temp
 		end
 
 		`uvm_info("ether_monitor_phy", "end collecting one packet, print result: ", UVM_LOW)
-		tr.my_print();
+		tr.print();
 
 		// $write("data_q = ");
 		// for (int i = 0; i < data_q.size(); i++) begin

@@ -7,6 +7,7 @@ import uvm_pkg::*;
 class ether_driver extends uvm_driver;
 
 	`uvm_component_utils(ether_driver)
+	
 	virtual ether_if_axi vif_axi;
 	virtual ether_if_phy vif_phy;
 
