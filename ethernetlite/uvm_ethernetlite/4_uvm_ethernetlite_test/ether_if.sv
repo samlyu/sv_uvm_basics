@@ -1,3 +1,6 @@
+`ifndef ETHER_IF__SV
+`define ETHER_IF__SV
+
 interface ether_if_axi (input sys_clk, input arstn, input phy_clk, output ip2intc_irpt);
 
 	logic	[31:0]	awaddr;
@@ -36,3 +39,5 @@ interface ether_if_phy (input sys_clk, input arstn, input phy_clk, output ip2int
 	logic	[3:0]	tx_data;
 
 endinterface
+
+`endif

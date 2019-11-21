@@ -1,3 +1,6 @@
+`ifndef ETHER_DRIVER__SV
+`define ETHER_DRIVER__SV
+
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
@@ -190,3 +193,5 @@ class ether_driver extends uvm_driver #(ether_transaction);
 	endtask : drive_one_pkt
 
 endclass : ether_driver
+
+`endif

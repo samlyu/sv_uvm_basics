@@ -1,8 +1,10 @@
+`ifndef ETHER_SEQUENCER__SV
+`define ETHER_SEQUENCER__SV
+
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
 `include "ether_transaction.sv"
-`include "ether_sequence.sv"
 
 class ether_sequencer extends uvm_sequencer #(ether_transaction);
 
@@ -13,3 +15,5 @@ class ether_sequencer extends uvm_sequencer #(ether_transaction);
 	endfunction : new
 
 endclass : ether_sequencer
+
+`endif

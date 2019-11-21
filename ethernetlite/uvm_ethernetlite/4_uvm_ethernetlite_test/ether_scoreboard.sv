@@ -1,3 +1,6 @@
+`ifndef ETHER_SCOREBOARD__SV
+`define ETHER_SCOREBOARD__SV
+
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
@@ -60,3 +63,5 @@ class ether_scoreboard extends uvm_scoreboard;
 	endtask : main_phase
 
 endclass : ether_scoreboard
+
+`endif

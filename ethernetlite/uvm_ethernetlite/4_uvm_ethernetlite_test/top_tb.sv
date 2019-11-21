@@ -4,6 +4,8 @@ import uvm_pkg::*;
 
 `include "ether_if.sv"
 `include "ether_test.sv"
+`include "case0.sv"
+`include "case1.sv"
 
 module top_tb ();
 
@@ -34,7 +36,8 @@ initial begin
 end
 
 initial begin 
-	run_test("ether_test");
+	// run_test("ether_test");
+	run_test();
 end
 
 initial begin 

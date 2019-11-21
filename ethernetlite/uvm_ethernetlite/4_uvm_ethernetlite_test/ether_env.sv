@@ -1,3 +1,6 @@
+`ifndef ETHER_ENV__SV
+`define ETHER_ENV__SV
+
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
@@ -44,3 +47,5 @@ class ether_env extends uvm_env;
 	endfunction : connect_phase
 
 endclass : ether_env
+
+`endif

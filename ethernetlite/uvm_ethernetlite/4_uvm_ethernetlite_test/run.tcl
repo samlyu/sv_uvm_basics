@@ -2,7 +2,7 @@
 quit -sim
 project open D:/proj/uvm_ethernetlite/4_uvm_ethernetlite_test/uvm_ethernetlite_test.mpf
 project compileall
-vsim work.top_tb -novopt
+vsim work.top_tb -novopt +UVM_TESTNAME=case1
 add wave -position end  sim:/top_tb/sys_clk
 add wave -position end  sim:/top_tb/arstn
 add wave -position end  sim:/top_tb/phy_clk

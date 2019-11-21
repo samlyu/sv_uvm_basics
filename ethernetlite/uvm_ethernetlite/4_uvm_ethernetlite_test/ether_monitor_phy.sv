@@ -1,3 +1,6 @@
+`ifndef ETHER_MONITOR_PHY__SV
+`define ETHER_MONITOR_PHY__SV
+
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
@@ -72,3 +75,5 @@ class ether_monitor_phy extends uvm_monitor;
 	endtask : collect_one_pkt
 
 endclass : ether_monitor_phy
+
+`endif

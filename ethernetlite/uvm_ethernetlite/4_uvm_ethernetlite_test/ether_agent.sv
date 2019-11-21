@@ -1,3 +1,6 @@
+`ifndef ETHER_AGENT__SV
+`define ETHER_AGENT__SV
+
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
@@ -45,3 +48,5 @@ class ether_agent extends uvm_agent;
 	endfunction : connect_phase
 
 endclass : ether_agent
+
+`endif
