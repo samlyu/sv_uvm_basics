@@ -5,6 +5,7 @@ set UVM_HOME /home/eda/Mentor/Modelsim/modeltech/verilog_src/uvm-1.1d/
 set UVM_DPI_HOME /home/eda/Mentor/Modelsim/modeltech/uvm-1.1d/linux_x86_64/uvm_dpi
 set WORK_HOME /home/shengwei/uvm_example
 
+vlib work
 project open $WORK_HOME/uvm_example.mpf
 vlog +incdir+$UVM_HOME/src+$UVM_HOME -f filelist.f -override_timescale 1ns/1ps
 vsim -novopt -sv_lib $UVM_DPI_HOME -c top_tb +UVM_TESTNAME=$1
