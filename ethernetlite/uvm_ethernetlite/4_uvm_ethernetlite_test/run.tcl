@@ -1,8 +1,9 @@
-.main clear
+# do run.tcl case0 / case1
 quit -sim
+.main clear
 project open D:/proj/uvm_ethernetlite/4_uvm_ethernetlite_test/uvm_ethernetlite_test.mpf
 project compileall
-vsim work.top_tb -novopt +UVM_TESTNAME=case1
+vsim work.top_tb -novopt +UVM_TESTNAME=$1
 add wave -position end  sim:/top_tb/sys_clk
 add wave -position end  sim:/top_tb/arstn
 add wave -position end  sim:/top_tb/phy_clk
@@ -33,3 +34,4 @@ add wave -position end  sim:/top_tb/if_phy_inst/rst_n
 add wave -position end  sim:/top_tb/if_phy_inst/tx_en
 add wave -position end  sim:/top_tb/if_phy_inst/tx_data
 run -a
+
