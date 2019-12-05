@@ -1,6 +1,6 @@
 `ifndef MY_AGENT__SV
 `define MY_AGENT__SV
-
+`include "uvm_pkg.sv"
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 
@@ -8,7 +8,7 @@ import uvm_pkg::*;
 `include "my_monitor.sv"
 `include "my_transaction.sv"
 `include "my_sequencer.sv"
-`include "my_sequence.sv"
+// `include "my_sequence.sv"
 
 class my_agent extends uvm_agent;
 
@@ -43,3 +43,4 @@ class my_agent extends uvm_agent;
 endclass : my_agent
 
 `endif
+

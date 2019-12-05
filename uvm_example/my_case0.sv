@@ -1,6 +1,6 @@
 `ifndef MY_CASE0__SV
 `define MY_CASE0__SV
-
+`include "uvm_pkg.sv"
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 
@@ -46,3 +46,4 @@ class my_case0 extends base_test;
 endclass : my_case0
 
 `endif
+

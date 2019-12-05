@@ -1,11 +1,11 @@
 `ifndef MY_DRIVER__SV
 `define MY_DRIVER__SV
-
+`include "uvm_pkg.sv"
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
 `include "my_transaction.sv"
-`include "my_sequence.sv"
+// `include "my_sequence.sv"
 
 class my_driver extends uvm_driver #(my_transaction);
 
@@ -64,3 +64,4 @@ class my_driver extends uvm_driver #(my_transaction);
 endclass : my_driver
 
 `endif
+

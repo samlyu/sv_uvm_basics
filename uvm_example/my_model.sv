@@ -1,6 +1,6 @@
 `ifndef MY_MODEL__SV
 `define MY_MODEL__SV
-
+`include "uvm_pkg.sv"
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 

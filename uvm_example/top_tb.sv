@@ -1,5 +1,5 @@
-`timescale 1ns/1ps
-
+// `timescale 1ns/1ps
+`include "uvm_pkg.sv"
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 
@@ -12,7 +12,7 @@ import uvm_pkg::*;
 `include "my_model.sv"
 `include "my_scoreboard.sv"
 `include "my_sequencer.sv"
-`include "my_sequence.sv"
+// `include "my_sequence.sv"
 `include "base_test.sv"
 `include "my_case0.sv"
 `include "my_case1.sv"
@@ -61,3 +61,4 @@ initial begin
 end
 
 endmodule : top_tb
+

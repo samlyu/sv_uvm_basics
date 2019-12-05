@@ -1,6 +1,6 @@
 `ifndef MY_SEQUENCER__SV
 `define MY_SEQUENCER__SV
-
+`include "uvm_pkg.sv"
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 

@@ -1,6 +1,6 @@
 `ifndef BASE_TEST__SV
 `define BASE_TEST__SV
-
+`include "uvm_pkg.sv"
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 
@@ -17,7 +17,7 @@ class base_test extends uvm_test;
 	virtual function void build_phase(uvm_phase phase);
 		super.build_phase(phase);
 		env = my_env::type_id::create("env", this);
-		uvm_config_db#(uvm_object_wrapper)::set(this, "env.i_agt.sqr.main_phase", "default_sequence", my_sequence::type_id::get());	   	
+		// uvm_config_db#(uvm_object_wrapper)::set(this, "env.i_agt.sqr.main_phase", "default_sequence", my_sequence::type_id::get());	   	
 	endfunction : build_phase
 
 	virtual function void report_phase(uvm_phase phase);

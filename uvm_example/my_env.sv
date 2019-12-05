@@ -1,6 +1,6 @@
 `ifndef MY_ENV__SV
 `define MY_ENV__SV
-
+`include "uvm_pkg.sv"
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 
@@ -9,7 +9,7 @@ import uvm_pkg::*;
 `include "my_agent.sv"
 `include "my_model.sv"
 `include "my_scoreboard.sv"
-`include "my_sequence.sv"
+// `include "my_sequence.sv"
 
 class my_env extends uvm_env;
 
@@ -63,3 +63,4 @@ class my_env extends uvm_env;
 endclass : my_env
 
 `endif
+

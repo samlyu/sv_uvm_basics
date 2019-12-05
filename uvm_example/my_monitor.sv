@@ -1,6 +1,6 @@
 `ifndef MY_MONITOR__SV
 `define MY_MONITOR__SV
-
+`include "uvm_pkg.sv"
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 
