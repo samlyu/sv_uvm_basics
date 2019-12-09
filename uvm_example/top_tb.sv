@@ -12,7 +12,6 @@ import uvm_pkg::*;
 `include "my_model.sv"
 `include "my_scoreboard.sv"
 `include "my_sequencer.sv"
-// `include "my_sequence.sv"
 `include "base_test.sv"
 `include "my_case0.sv"
 `include "my_case1.sv"
@@ -37,6 +36,11 @@ dut my_dut(
 	.txd(output_if.data),
 	.tx_en(output_if.valid)
 );
+
+initial begin
+	$fsdbDumpfile("top_wave.fsdb");
+	$fsdbDumpvars(0, "top_tb");
+end
 
 initial begin
 	clk = 0;
